@@ -14,7 +14,7 @@ glove_model.load_state_dict(torch.load("./text8.pt"))
 glove_model.to(device)
 glove_model.eval()
 
-embedding = glove_model.wi.weight.data.numpy() + glove_model.wj.weight.data.numpy()
+embedding = glove_model.wi.weight.cpu().data.numpy() + glove_model.wj.weight.cpu().data.numpy()
 print(embedding.shape)
 
 mapping_dicts = json.loads(open("mapping.json").read())
@@ -32,3 +32,7 @@ def most_similar(word, n=10):
     similar_dict = {word: vector for word, vector in zip(mapping_dicts['id2word'].values(), similar_vector)}
     similar_dict = sorted(similar_dict.items(), key= lambda item: item[1], reverse=True)
     return similar_dict[1:n+1]
+
+while True:
+    x = input("Enter word: ")
+    print(most_similar(x))

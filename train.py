@@ -28,17 +28,18 @@ def wmse_loss(weights, inputs, targets):
     return torch.mean(loss)
 
 
-dataset = GloveDataset(open("./text8").read(), n_words=10000000)
-glove = GloveModel(dataset._vocab_len, EMBED_DIM)
-glove.to(device)
-
-
-n_batches = int(len(dataset._xij) / BATCH_SIZE)
-loss_values = list()
-
-optimizer = optim.Adagrad(glove.parameters(), lr=0.05)
 
 if __name__ == "__main__":
+
+    dataset = GloveDataset(open("./text8").read(), n_words=10000000)
+    glove = GloveModel(dataset._vocab_len, EMBED_DIM)
+    glove.to(device)
+
+
+    n_batches = int(len(dataset._xij) / BATCH_SIZE)
+    loss_values = list()
+
+    optimizer = optim.Adagrad(glove.parameters(), lr=0.05)
     for e in range(1, N_EPOCHS + 1):
         batch_i = 0
 
