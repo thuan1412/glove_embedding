@@ -7,6 +7,8 @@ import numpy as np
 
 from glove_dataset import GloveDataset
 from glove_model import GloveModel
+from vi_dataloader import ViDataLoader
+
 
 EMBED_DIM = 300
 
@@ -31,7 +33,7 @@ def wmse_loss(weights, inputs, targets):
 
 if __name__ == "__main__":
 
-    dataset = GloveDataset(open("./text8").read(), n_words=10000000)
+    dataset = ViDataLoader(n_lines=1000)
     glove = GloveModel(dataset._vocab_len, EMBED_DIM)
     glove.to(device)
 
@@ -55,7 +57,7 @@ if __name__ == "__main__":
             optimizer.step()
 
             loss_values.append(loss.item())
-            if batch_i % 250 == 0:
+            if batch_i % 250 == 0 or batch_i == n_batches:
                 print("Epoch: {}/{} \t Batch: {}/{} \t Loss: {}".format(
                     e, N_EPOCHS, batch_i, n_batches, np.mean(loss_values[-20:])))
 
